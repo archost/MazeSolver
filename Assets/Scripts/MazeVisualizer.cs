@@ -59,7 +59,7 @@ public class MazeVisualizer : MonoBehaviour
                         break;
                 }
 
-                instance.transform.Find("Square").GetComponent<SpriteRenderer>().color = color;
+                instance.GetComponentInChildren<SpriteRenderer>().color = color;
                 instance.transform.localScale = new Vector2(prefabSize, prefabSize);
                 instance.transform.position = new Vector2(transform.position.x + prefabSize * x, transform.position.y + prefabSize * mazeY);
                 row.Add(instance);

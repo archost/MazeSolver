@@ -15,10 +15,8 @@ public class MazeSolver : MonoBehaviour
     
     private void Start()
     {
-        int[,] map = _mazeGenerator.GenerateMaze();
+        int[,] map = _mazeGenerator.GenerateMaze(30, 30, out KeyValuePair<int, int> start, out KeyValuePair<int, int> finish);
         List<List<GameObject>> maze = _mazeVisualizer.DrawMaze(map);
-        KeyValuePair<int, int> start = new(7, 1);
-        KeyValuePair<int, int> finish = new(0, 17);
 
         StartCoroutine(BFS(maze, map, start, finish));
     }
@@ -40,9 +38,9 @@ public class MazeSolver : MonoBehaviour
             for (int j = 0; j < cols; j++)
                 from[i, j] = new(-1, -1);
 
-        Queue<KeyValuePair<int, int>> q = new();
         dist[start.Key,start.Value] = 0;
 
+        Queue<KeyValuePair<int, int>> q = new();
         q.Enqueue(new KeyValuePair<int, int>(start.Key, start.Value));
 
         KeyValuePair<int, int>[] dir = { new(0, 1), new(1, 0), new (0, -1), new(-1, 0) };
@@ -61,41 +59,22 @@ public class MazeSolver : MonoBehaviour
                     from[ty, tx] = new(cell.Key, cell.Value);
                     maze[ty][tx].GetComponentInChildren<SpriteRenderer>().color = Color.blue;
                     q.Enqueue(new(ty, tx));
-
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(0.05f);
                 }
             }
         }
-        int iterations = 0;
         if (dist[finish.Key, finish.Value] != INF)
         {
             int y = finish.Key;
             int x = finish.Value;
             while(y != -1 && x != -1)
             {
-                iterations++;
-                maze[y][x].GetComponentInChildren<SpriteRenderer>().color = Color.red;
-                y = from[y, x].Key;
-                x = from[y, x].Value;
+                maze[y][x].GetComponentInChildren<SpriteRenderer>().color = Color.magenta;
+                int prevY = y;
+                int prevX = x;
+                y = from[prevY, prevX].Key;
+                x = from[prevY, prevX].Value;
             }
         }
-        Debug.Log(iterations);
-
-        Debug.Log(dist[finish.Key, finish.Value]);
     }
-
-    /*
-    if (dist[finish.first][finish.second] != INF)
-    {
-        int y = finish.first;
-        int x = finish.second;
-        while (y != -1 && x != -1)
-        {
-            map[y][x] = '*';
-            auto[py, px] = from[y][x];
-            y = py;
-            x = px;
-        }
-    }
-    */
 }
