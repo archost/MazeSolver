@@ -3,25 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeSolver : MonoBehaviour
+public class MazeSolver
 {
-    [SerializeField]
-    private MazeVisualizer _mazeVisualizer;
-
-    [SerializeField]
-    private MazeGenerator _mazeGenerator;
-
     private int INF = 1000000000;
-    
-    private void Start()
-    {
-        int[,] map = _mazeGenerator.GenerateMaze(30, 30, out KeyValuePair<int, int> start, out KeyValuePair<int, int> finish);
-        List<List<GameObject>> maze = _mazeVisualizer.DrawMaze(map);
 
-        StartCoroutine(BFS(maze, map, start, finish));
-    }
-
-    private IEnumerator BFS(List<List<GameObject>> maze, int[,] map, KeyValuePair<int, int> start, KeyValuePair<int, int> finish)
+    public IEnumerator BFS(List<List<GameObject>> maze, int[,] map, KeyValuePair<int, int> start, KeyValuePair<int, int> finish)
     {
         int rows = map.GetLength(0);
         int cols = map.GetLength(1);
@@ -59,7 +45,8 @@ public class MazeSolver : MonoBehaviour
                     from[ty, tx] = new(cell.Key, cell.Value);
                     maze[ty][tx].GetComponentInChildren<SpriteRenderer>().color = Color.blue;
                     q.Enqueue(new(ty, tx));
-                    yield return new WaitForSeconds(0.05f);
+                    // yield return new WaitForSeconds(0.05f);
+                    yield return new WaitForEndOfFrame();
                 }
             }
         }
@@ -74,6 +61,7 @@ public class MazeSolver : MonoBehaviour
                 int prevX = x;
                 y = from[prevY, prevX].Key;
                 x = from[prevY, prevX].Value;
+                yield return new WaitForEndOfFrame();
             }
         }
     }

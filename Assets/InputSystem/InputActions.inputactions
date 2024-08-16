@@ -1,0 +1,54 @@
+{
+    "name": "InputActions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "ac4c45b9-8745-4b7f-a161-617ea8859515",
+            "actions": [
+                {
+                    "name": "GenerateMap",
+                    "type": "Button",
+                    "id": "5d852e35-414c-4e27-a9d2-fd691b66022a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Solve",
+                    "type": "Button",
+                    "id": "8b006c29-1f72-4722-89b4-c671634d9743",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6063c4d7-7aab-4406-9e92-75e82e50a3ee",
+                    "path": "<Keyboard>/n",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GenerateMap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f86e1dee-ebff-4039-9834-63a6bc9c8b56",
+                    "path": "<Keyboard>/s",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Solve",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

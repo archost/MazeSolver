@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeGenerator : MonoBehaviour
+public class MazeGenerator
 {
-    public int[,] GenerateMaze(int width, int height, out KeyValuePair<int, int> start, out KeyValuePair<int, int> finish)
+    public int[,] GenerateMaze(int width, int height)
     {
         int[,] maze = new int[height, width];
 
-        // Initialize maze with walls
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -17,13 +16,46 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
-        start = new(Random.Range(1, height - 1), Random.Range(1, width - 1));
-        finish = new(Random.Range(1, height - 1), Random.Range(1, width - 1));
-        
-        maze[start.Key, start.Value] = 2;
-        maze[finish.Key, finish.Value] = 3;
+        RecursiveBacktracker(maze, 1, 1);
 
-        RecursiveBacktracker(maze, start.Key, start.Value);
+        /*
+        start = new();
+        finish = new();
+
+
+        bool startChecked = false;
+        bool finishChecked = false;
+        KeyValuePair<int, int> lastCell = new KeyValuePair<int, int>();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (maze[i, j] == 0)
+                {
+                    lastCell = new(i, j);
+                    if (!startChecked && Random.Range(0, 50) == 1)
+                    {
+                        startChecked = true;
+                        start = new(i, j);
+                        maze[i, j] = 2;
+                    }
+                    if (!finishChecked && Random.Range(0, 1000) == 1)
+                    {
+                        finishChecked = true;
+                        finish = new(i, j);
+                        maze[i, j] = 3;
+                    }
+                }
+                if (startChecked && finishChecked)
+                    break;
+            }
+        }
+        if (!finishChecked)
+        {
+            finish = lastCell;
+            maze[finish.Key, finish.Value] = 3;
+        }
+        */
 
         return maze;
     }

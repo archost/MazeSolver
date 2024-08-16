@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class MazeVisualizer : MonoBehaviour
@@ -12,13 +9,15 @@ public class MazeVisualizer : MonoBehaviour
 
     private float _screenHeight, _screenWidth;
 
-    void Awake()
+    public float prefabSize;
+
+    void Start()
     {
         Camera camera = Camera.main;
         _screenHeight = camera.orthographicSize * 2;
         _screenWidth = camera.orthographicSize * 2 * camera.aspect;
 
-        Vector3 cameraPosition = camera.transform.position;
+        Vector2 cameraPosition = camera.transform.position;
         transform.position = new Vector2(cameraPosition.x - _screenWidth / 2, cameraPosition.y - _screenHeight / 2);
     }
 
@@ -29,7 +28,7 @@ public class MazeVisualizer : MonoBehaviour
 
         List<List<GameObject>> maze = new List<List<GameObject>>(rows);
 
-        float prefabHeight, prefabWidth, prefabSize;
+        float prefabHeight, prefabWidth;
         prefabHeight = _screenHeight / rows;
         prefabWidth = _screenWidth / cols;
 
