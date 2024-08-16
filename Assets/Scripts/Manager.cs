@@ -59,9 +59,13 @@ public class Manager : MonoBehaviour
 
     private void OnGenerateMap(InputAction.CallbackContext context)
     {
-        if(currentCoroutine != null)
+        if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
+        }
+        if (_maze != null) {
+            Debug.Log("deleting");
             DeleteMaze();
         }
 
@@ -70,18 +74,14 @@ public class Manager : MonoBehaviour
 
         _map = _mazeGenerator.GenerateMaze(_cols, _rows);
         _maze = _mazeVisualizer.DrawMaze(_map);
-
     }
 
     private void OnSolve(InputAction.CallbackContext context)
     {
-        if (!_start.Equals(default(KeyValuePair<int, int>)) && !_finish.Equals(default(KeyValuePair<int, int>)))
+        if (_start.Key != -1 && _start.Value != -1 && _finish.Key != -1 && _finish.Value != -1
+            && currentCoroutine == null)
         {
             currentCoroutine = StartCoroutine(_mazeSolver.BFS(_maze, _map, _start, _finish));
-        }
-        else
-        {
-            Debug.Log("Set start and finish cells first!");
         }
     }
 

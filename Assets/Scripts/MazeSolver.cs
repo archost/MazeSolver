@@ -46,7 +46,7 @@ public class MazeSolver
                     maze[ty][tx].GetComponentInChildren<SpriteRenderer>().color = Color.blue;
                     q.Enqueue(new(ty, tx));
                     // yield return new WaitForSeconds(0.05f);
-                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForSeconds(0.001f);
                 }
             }
         }
