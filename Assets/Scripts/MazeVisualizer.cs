@@ -44,17 +44,11 @@ public class MazeVisualizer : MonoBehaviour
 
                 switch(map[y, x])
                 {
-                    case (0):
+                    case (1):
                         color = Color.white;
                         break;
-                    case (1):
+                    case (-1):
                         color = Color.black;
-                        break;
-                    case (2):
-                        color = Color.green;
-                        break;
-                    case (3):
-                        color = Color.red;
                         break;
                 }
 

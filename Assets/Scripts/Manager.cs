@@ -24,6 +24,8 @@ public class Manager : MonoBehaviour
 
     private InputAction _solveAction; 
 
+    private InputAction _resetAction; 
+
     private List<List<GameObject>> _maze;
 
     private int[,] _map;
@@ -40,14 +42,20 @@ public class Manager : MonoBehaviour
         var actionMap = inputActions.FindActionMap("Player");
         _generateAction = actionMap.FindAction("GenerateMap");
         _solveAction = actionMap.FindAction("Solve");
+        _resetAction = actionMap.FindAction("Reset");
+
         _generateAction.performed += OnGenerateMap;
         _solveAction.performed += OnSolve;
+        _resetAction.performed += OnResetMap;
+
         _generateAction.Enable();
         _solveAction.Enable();
+        _resetAction.Enable();
     }
 
     private void Update()
     {
+        
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePosition = Input.mousePosition;
@@ -55,6 +63,7 @@ public class Manager : MonoBehaviour
             if (_maze != null)
                 SetStartAndFinish(worldPosition);
         }
+        
     }
 
     private void OnGenerateMap(InputAction.CallbackContext context)
@@ -64,10 +73,9 @@ public class Manager : MonoBehaviour
             StopCoroutine(currentCoroutine);
             currentCoroutine = null;
         }
-        if (_maze != null) {
-            Debug.Log("deleting");
+
+        if (_maze != null)
             DeleteMaze();
-        }
 
         _start = new(-1, -1);
         _finish = new(-1, -1);
@@ -76,12 +84,31 @@ public class Manager : MonoBehaviour
         _maze = _mazeVisualizer.DrawMaze(_map);
     }
 
+    private void OnResetMap(InputAction.CallbackContext context)
+    {
+        if (_maze == null)
+            return;
+
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
+        }
+
+        DeleteMaze();
+
+        _start = new(-1, -1);
+        _finish = new(-1, -1);
+
+        _maze = _mazeVisualizer.DrawMaze(_map);
+    }
+
     private void OnSolve(InputAction.CallbackContext context)
     {
         if (_start.Key != -1 && _start.Value != -1 && _finish.Key != -1 && _finish.Value != -1
             && currentCoroutine == null)
         {
-            currentCoroutine = StartCoroutine(_mazeSolver.BFS(_maze, _map, _start, _finish));
+            currentCoroutine = StartCoroutine(_mazeSolver.Astar(_maze, _map, _start, _finish));
         }
     }
 
@@ -95,19 +122,18 @@ public class Manager : MonoBehaviour
             }
         }
     }
-
     public void SetStartAndFinish(Vector2 coordinates){
         if (_start.Key == -1 && _start.Value == -1)
         {
             _start = new((int)((-coordinates.y + 4) / _mazeVisualizer.prefabSize), (int)((coordinates.x + 7.11) / _mazeVisualizer.prefabSize));
             _maze[_start.Key][_start.Value].GetComponentInChildren<SpriteRenderer>().color = Color.green;
-            _map[_start.Key, _start.Value] = 2;
+            // _map[_start.Key, _start.Value] = 1;
         }
         else if (_finish.Key == -1 && _finish.Value == -1)
         {
             _finish = new((int)((-coordinates.y + 4) / _mazeVisualizer.prefabSize), (int)((coordinates.x + 7.11) / _mazeVisualizer.prefabSize));
             _maze[_finish.Key][_finish.Value].GetComponentInChildren<SpriteRenderer>().color = Color.red;
-            _map[_finish.Key, _finish.Value] = 3;
+            // _map[_finish.Key, _finish.Value] = 1;
         }
     }
 }

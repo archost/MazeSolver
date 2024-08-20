@@ -12,50 +12,26 @@ public class MazeGenerator
         {
             for (int j = 0; j < width; j++)
             {
-                maze[i, j] = 1;
+                maze[i, j] = -1;
             }
         }
 
         RecursiveBacktracker(maze, 1, 1);
 
-        /*
-        start = new();
-        finish = new();
+        return maze;
+    }
 
+    public int[,] GenerateBlank(int width, int height)
+    {
+        int[,] maze = new int[height, width];
 
-        bool startChecked = false;
-        bool finishChecked = false;
-        KeyValuePair<int, int> lastCell = new KeyValuePair<int, int>();
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
-                if (maze[i, j] == 0)
-                {
-                    lastCell = new(i, j);
-                    if (!startChecked && Random.Range(0, 50) == 1)
-                    {
-                        startChecked = true;
-                        start = new(i, j);
-                        maze[i, j] = 2;
-                    }
-                    if (!finishChecked && Random.Range(0, 1000) == 1)
-                    {
-                        finishChecked = true;
-                        finish = new(i, j);
-                        maze[i, j] = 3;
-                    }
-                }
-                if (startChecked && finishChecked)
-                    break;
+                maze[i, j] = 1;
             }
         }
-        if (!finishChecked)
-        {
-            finish = lastCell;
-            maze[finish.Key, finish.Value] = 3;
-        }
-        */
 
         return maze;
     }
@@ -86,10 +62,10 @@ public class MazeGenerator
                     break;
             }
 
-            if (newX > 0 && newX < maze.GetLength(1) - 1 && newY > 0 && newY < maze.GetLength(0) - 1 && maze[newY, newX] == 1)
+            if (newX > 0 && newX < maze.GetLength(1) - 1 && newY > 0 && newY < maze.GetLength(0) - 1 && maze[newY, newX] == -1)
             {
-                maze[newY, newX] = 0;
-                maze[y + (newY - y) / 2, x + (newX - x) / 2] = 0;
+                maze[newY, newX] = 1;
+                maze[y + (newY - y) / 2, x + (newX - x) / 2] = 1;
                 RecursiveBacktracker(maze, newX, newY);
             }
         }
