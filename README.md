@@ -5,3 +5,4 @@ Actions:
 - To generate a maze, press N
 - To set start and finish cells, click left mouse button on the cell
 - To solve a maze, press S
+- To reset a maze (to leave the generated one), press R
